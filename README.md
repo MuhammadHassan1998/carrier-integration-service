@@ -20,6 +20,7 @@ Right now it supports UPS only. The project is set up so another carrier can be 
 ```bash
 npm install
 cp .env.example .env
+```
 
 Add your UPS credentials to `.env`.
 
