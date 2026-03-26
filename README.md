@@ -2,37 +2,64 @@
 
 Small TypeScript service for fetching shipping rates.
 
-Right now it supports UPS only. The project is set up so another carrier can be added later behind the same interface.
+This version supports UPS and is structured so another carrier can be added later without changing the core service flow.
 
-## What It Does
+## Design
 
-- Accepts a normalized shipping request
-- Maps that request to the UPS rate API format
-- Returns normalized rate quotes
-- Handles validation, auth, retries, and common errors
+- `domain` holds the normalized request and response models
+- `carriers` contains the carrier interface and UPS-specific implementation
+- `services/RateService` validates input and collects quotes from available carriers
+- `auth/TokenManager` handles OAuth token fetching and caching
 
-## Requirements
-
-- Node.js 18+
+I kept the carrier-specific mapping and API logic separate from the shared service layer so the code stays easier to extend and test.
 
 ## Setup
 
+Install dependencies:
+
 ```bash
 npm install
+```
+
+Create `.env` from `.env.example`.
+
+macOS and Linux:
+
+```bash
 cp .env.example .env
 ```
 
-Add your UPS credentials to `.env`.
+Windows PowerShell:
 
-You can also change `APP_NAME` or `UPS_RATE_PATH` there if needed.
+```powershell
+Copy-Item .env.example .env
+```
 
-## Scripts
+Windows Command Prompt:
 
-- `npm test`
-- `npm run typecheck`
-- `npm run build`
+```cmd
+copy .env.example .env
+```
 
-## Notes
+Then add your UPS credentials to `.env`.
 
-- Tests use mocked responses
-- The current implementation includes UPS only
+## Run
+
+```bash
+npm run build
+```
+
+## Tests
+
+```bash
+npm test
+```
+
+The tests use mocked UPS responses, so they do not require live credentials.
+
+## If I Had More Time
+
+- add another carrier implementation
+- expand test coverage for failure cases
+- add a small HTTP route example
+- add CI for build and test checks
